@@ -2,8 +2,6 @@
 
 ZENVOY is a React + Vite web client for safety-first urban navigation. The app compares a safest route and a fastest route, shows route-level safety evidence, opens nearby Mapillary street imagery, overlays Mapillary sign/object data, and exposes an SOS flow backed by the FastAPI service in the sibling backend repository.
 
-![ZENVOY live interface](./src/assets/hero.png)
-
 ## User Docs
 
 ### What the app does
