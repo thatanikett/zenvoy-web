@@ -106,15 +106,15 @@ export default function SearchBar({
       display: 'flex',
       flexDirection: 'column',
       gap: '12px',
-      width: '360px',
+      width: '332px',
       animation: 'fadeUp 0.4s ease',
     }}>
       {mapDataPanel}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '10px',
-        padding: '18px 18px 16px',
+        gap: '8px',
+        padding: '16px 16px 14px',
         background: 'linear-gradient(180deg, rgba(11,15,20,0.88) 0%, rgba(11,15,20,0.72) 100%)',
         border: '1px solid rgba(255,255,255,0.08)',
         borderRadius: '28px',
@@ -172,9 +172,9 @@ export default function SearchBar({
               height: '36px',
               padding: '0 14px',
               borderRadius: '999px',
-              background: mapDataPanelOpen ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))',
               border: '1px solid rgba(255,255,255,0.08)',
-              color: mapDataPanelOpen ? 'var(--text-primary)' : 'var(--text-secondary)',
+              color: mapDataPanelOpen ? 'var(--accent-safe)' : 'var(--text-secondary)',
               fontFamily: 'var(--font-mono)',
               fontSize: '10px',
               letterSpacing: '0.12em',
@@ -182,35 +182,28 @@ export default function SearchBar({
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 20px rgba(0,0,0,0.18)',
             }}
           >
-            <span style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '999px',
-              background: mapDataPanelOpen ? 'var(--accent-safe)' : 'rgba(217,239,146,0.45)',
-              boxShadow: mapDataPanelOpen ? '0 0 0 4px rgba(217,239,146,0.12)' : 'none',
-            }} />
             MAP DATA
           </button>
         </div>
 
         <div style={{
           fontFamily: 'var(--font-body)',
-          fontSize: '14px',
-          lineHeight: 1.55,
+          fontSize: '13px',
+          lineHeight: 1.45,
           color: 'var(--text-secondary)',
-          maxWidth: '30ch',
+          maxWidth: '28ch',
         }}>
-          Search a route, compare safety signals, and inspect the AI reasoning behind the recommendation.
+          Set your start and destination, then compare the safest and fastest route.
         </div>
 
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '10px',
-          paddingTop: '4px',
+          gap: '8px',
+          paddingTop: '2px',
         }}>
           <LocationBlock
             label="SOURCE"
@@ -224,7 +217,7 @@ export default function SearchBar({
           <div style={{
             marginLeft: '14px',
             width: '1px',
-            height: '18px',
+            height: '14px',
             background: 'linear-gradient(180deg, rgba(217,239,146,0.2), rgba(255,255,255,0))',
           }} />
 
@@ -242,7 +235,7 @@ export default function SearchBar({
           display: 'grid',
           gridTemplateColumns: '112px 1fr',
           gap: '10px',
-          marginTop: '4px',
+          marginTop: '2px',
         }}>
           <button
             type="button"
@@ -257,7 +250,7 @@ export default function SearchBar({
               cursor: 'pointer',
               letterSpacing: '0.08em',
               padding: '0 14px',
-              minHeight: '56px',
+              minHeight: '52px',
             }}
           >
             CLEAR
@@ -280,7 +273,7 @@ export default function SearchBar({
               fontWeight: '600',
               letterSpacing: '0.14em',
               padding: '16px 18px',
-              minHeight: '56px',
+              minHeight: '52px',
               boxShadow: canSearch && !loading ? '0 24px 44px rgba(217,239,146,0.18)' : 'none',
               transition: 'transform 0.15s ease, opacity 0.2s ease',
               opacity: canSearch || loading ? 1 : 0.75,

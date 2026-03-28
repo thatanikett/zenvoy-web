@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Viewer } from 'mapillary-js'
 
 const MAPILLARY_TOKEN = import.meta.env.VITE_MAPILLARY_TOKEN
@@ -13,6 +13,8 @@ export default function StreetViewPanel({
 }) {
   const containerRef = useRef(null)
   const viewerRef = useRef(null)
+  const dragStateRef = useRef(null)
+  const [dragOffsetX, setDragOffsetX] = useState(0)
 
   useEffect(() => {
     if (!open || !containerRef.current || !MAPILLARY_TOKEN || !image?.id || viewerRef.current) {
@@ -36,6 +38,28 @@ export default function StreetViewPanel({
     viewerRef.current.moveTo(image.id).catch(() => {})
   }, [image?.id])
 
+  useEffect(() => {
+    function handlePointerMove(event) {
+      const dragState = dragStateRef.current
+      if (!dragState) return
+
+      const nextOffset = dragState.initialOffset + (event.clientX - dragState.startX)
+      setDragOffsetX(clamp(nextOffset, -260, 260))
+    }
+
+    function handlePointerUp() {
+      dragStateRef.current = null
+    }
+
+    window.addEventListener('pointermove', handlePointerMove)
+    window.addEventListener('pointerup', handlePointerUp)
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerup', handlePointerUp)
+    }
+  }, [])
+
   if (!open) return null
 
   return (
@@ -45,9 +69,23 @@ export default function StreetViewPanel({
       boxShadow: '0 24px 60px rgba(0,0,0,0.38)',
       backdropFilter: 'blur(18px)',
       animation: 'fadeUp 0.28s ease',
+      transform: `translateX(calc(-18% + ${dragOffsetX}px))`,
     }}>
+      <div
+        onPointerDown={(event) => {
+          if (window.innerWidth <= 900) return
+          dragStateRef.current = {
+            startX: event.clientX,
+            initialOffset: dragOffsetX,
+          }
+        }}
+        style={dragHandleWrapStyle}
+      >
+        <span style={dragHandleStyle} />
+      </div>
+
       <div style={{
-        padding: '16px 18px 14px',
+        padding: '14px 18px 12px',
         borderBottom: '1px solid rgba(255,255,255,0.08)',
         display: 'flex',
         alignItems: 'flex-start',
@@ -120,37 +158,6 @@ export default function StreetViewPanel({
           }}
         />
       </div>
-
-      <div style={{
-        padding: '14px 18px 16px',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
-      }}>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '4px',
-          minWidth: 0,
-        }}>
-          <span style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
-            letterSpacing: '0.12em',
-            color: 'var(--text-muted)',
-          }}>
-            IMAGE ID
-          </span>
-          <span style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '13px',
-            color: 'var(--text-primary)',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}>
-            {image?.id || 'Waiting for selection'}
-          </span>
-        </div>
-      </div>
     </aside>
   )
 }
@@ -202,4 +209,23 @@ const closeButtonStyle = {
   fontSize: '11px',
   letterSpacing: '0.08em',
   cursor: 'pointer',
+}
+
+const dragHandleWrapStyle = {
+  display: 'grid',
+  placeItems: 'center',
+  paddingTop: '10px',
+  paddingBottom: '4px',
+  cursor: 'grab',
+}
+
+const dragHandleStyle = {
+  width: '56px',
+  height: '5px',
+  borderRadius: '999px',
+  background: 'rgba(255,255,255,0.16)',
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max)
 }

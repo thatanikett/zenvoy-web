@@ -173,11 +173,11 @@ html, body, #root {
 
 .street-view-panel {
   position: absolute;
-  left: 50%;
+  left: 54%;
   bottom: 24px;
   transform: translateX(-18%);
-  width: min(340px, calc(100vw - 120px));
-  height: min(48vh, 420px);
+  width: min(360px, calc(100vw - 140px));
+  height: min(44vh, 388px);
   border-radius: 22px;
   overflow: hidden;
   z-index: 26;
@@ -201,7 +201,7 @@ html, body, #root {
     left: 12px;
     bottom: 16px;
     width: auto;
-    height: min(62vh, 520px);
+    height: min(58vh, 500px);
     border-radius: 20px;
   }
 }
