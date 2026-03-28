@@ -514,7 +514,8 @@ function PreviewRow({ label, preview }) {
 
 function getInsight(route) {
   const score = route?.score || route?.score_breakdown || {}
-  const recentCrimes = Array.isArray(score.recent_crimes) ? score.recent_crimes : []
+  const recentCrimes = getCrimeReports(route, score)
+  const crimeCount = score.crime_count ?? route?.crime_count ?? recentCrimes.length ?? 0
   const connaughtPlace = route?.connaught_place || {}
   const passesConnaughtPlace = Boolean(connaughtPlace.passes_connaught_place)
 
@@ -539,7 +540,7 @@ function getInsight(route) {
 
   const fallbackSummary = [
     `This ${route?.type || 'route'} covers ${formatDecimal(route?.distance_km)} km in approximately ${route?.estimated_time_min ?? 0} minutes.`,
-    `Lighting coverage is ${score.lighting_score_pct ?? 0}% with ${score.crime_count ?? 0} nearby crime signals.`,
+    `Lighting coverage is ${score.lighting_score_pct ?? 0}% with ${crimeCount} nearby crime signals.`,
     passesConnaughtPlace
       ? 'The route passes through Connaught Place.'
       : 'The route avoids Connaught Place.',
@@ -567,6 +568,7 @@ function getInsight(route) {
 
 function normalizeRouteMetrics(route) {
   const breakdown = route?.score || route?.score_breakdown || route?.metrics || {}
+  const recentCrimes = getCrimeReports(route, breakdown)
   const previewOrigin = route?.origin_preview || {}
   const previewDestination = route?.destination_preview || {}
   const connaughtPlace = route?.connaught_place || {}
@@ -584,7 +586,7 @@ function normalizeRouteMetrics(route) {
     crime_count:
       breakdown.crime_count ??
       route?.crime_count ??
-      0,
+      (recentCrimes.length || 0),
     crime_severity:
       breakdown.crime_severity ??
       breakdown.crime_density ??
@@ -604,8 +606,8 @@ function normalizeRouteMetrics(route) {
     weightedCrimeSeverity: formatDecimal(breakdown.weighted_crime_severity),
     avgCrimePenalty: formatDecimal(breakdown.avg_crime_penalty),
     visualEdgesAnalyzed: breakdown.visual_edges_analyzed ?? 0,
-    recentCrimes: Array.isArray(breakdown.recent_crimes) && breakdown.recent_crimes.length
-      ? breakdown.recent_crimes
+    recentCrimes: recentCrimes.length
+      ? recentCrimes
       : [{ type: 'clear', description: 'No recent crimes were returned for this route.' }],
     originPreview: {
       nodeId: previewOrigin.node_id || 'Unavailable',
@@ -627,6 +629,26 @@ function normalizeList(value) {
   if (Array.isArray(value)) return value.filter(Boolean)
   if (typeof value === 'string' && value.trim()) return [value.trim()]
   return []
+}
+
+function getCrimeReports(route, breakdown = {}) {
+  const reports = [
+    ...(Array.isArray(breakdown.recent_crimes) ? breakdown.recent_crimes : []),
+    ...(Array.isArray(breakdown.crime_reports) ? breakdown.crime_reports : []),
+    ...(Array.isArray(route?.crime_reports) ? route.crime_reports : []),
+    ...(Array.isArray(route?.recent_crimes) ? route.recent_crimes : []),
+  ]
+
+  if (!reports.length) return []
+
+  const seen = new Set()
+
+  return reports.filter((report, index) => {
+    const key = report?.id || `${report?.type || 'unknown'}-${report?.timestamp || 'na'}-${report?.lat || 'na'}-${report?.lng || 'na'}-${index}`
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
 }
 
 function getLightingTone(value) {
