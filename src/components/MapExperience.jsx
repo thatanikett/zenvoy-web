@@ -374,6 +374,12 @@ VITE_API_URL=http://localhost:8000`}</pre>
           alignItems: 'center',
           gap: '12px',
           zIndex: 25,
+          padding: '14px 18px',
+          borderRadius: '18px',
+          background: 'rgba(10, 14, 18, 0.34)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 18px 40px rgba(0,0,0,0.28)',
+          backdropFilter: 'blur(8px)',
         }}>
           <div style={{
             width: '36px',
@@ -382,12 +388,14 @@ VITE_API_URL=http://localhost:8000`}</pre>
             borderTopColor: 'var(--accent-safe)',
             borderRadius: '50%',
             animation: 'spin 0.8s linear infinite',
+            filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.28))',
           }} />
           <span style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '12px',
-            color: 'var(--text-secondary)',
+            color: 'var(--text-primary)',
             letterSpacing: '0.1em',
+            textShadow: '0 2px 10px rgba(0,0,0,0.45)',
           }}>
             COMPUTING SAFETY MESH...
           </span>

@@ -76,18 +76,24 @@ export default function LandingPage({ onLaunchApp, onNavigate }) {
     <div className="landing-shell">
       <div className="landing-noise" />
       <header className="landing-nav">
-        <a href="#top" className="landing-brand">
-          <span className="landing-brand-mark">
-            <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
-              <path d="M7 1L13 7L7 13L1 7L7 1Z" stroke="#10161d" strokeWidth="1.5" />
-              <circle cx="7" cy="7" r="2" fill="#10161d" />
-            </svg>
-          </span>
-          <span>
-            <strong>ZENVOY</strong>
-            <small>Delhi safety mesh</small>
-          </span>
-        </a>
+        <div className="landing-nav-group">
+          <a href="#top" className="landing-brand">
+            <span className="landing-brand-mark">
+              <svg width="18" height="18" viewBox="0 0 14 14" fill="none">
+                <path d="M7 1L13 7L7 13L1 7L7 1Z" stroke="#10161d" strokeWidth="1.5" />
+                <circle cx="7" cy="7" r="2" fill="#10161d" />
+              </svg>
+            </span>
+            <span>
+              <strong>ZENVOY</strong>
+              <small>Delhi safety mesh</small>
+            </span>
+          </a>
+          <div className="landing-nav-status">
+            <span className="landing-nav-status-dot" />
+            Route intelligence live
+          </div>
+        </div>
 
         <nav className="landing-links" aria-label="Section navigation">
           {NAV_ITEMS.map((item) => (
@@ -106,9 +112,14 @@ export default function LandingPage({ onLaunchApp, onNavigate }) {
           ))}
         </nav>
 
-        <button type="button" className="landing-cta landing-cta-small" onClick={onLaunchApp}>
-          Launch App
-        </button>
+        <div className="landing-nav-actions">
+          <a href="#workflow" className="landing-secondary-link landing-secondary-link-nav">
+            Workflow
+          </a>
+          <button type="button" className="landing-cta landing-cta-small" onClick={onLaunchApp}>
+            Launch App
+          </button>
+        </div>
       </header>
 
       <main id="top">
