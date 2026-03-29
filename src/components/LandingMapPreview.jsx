@@ -46,7 +46,6 @@ export default function LandingMapPreview() {
       .setLngLat(ABES_COORDINATES)
       .setHTML(`
         <div style="display:flex;flex-direction:column;gap:6px;min-width:180px;">
-          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--accent-safe);">LIVE CONTEXT</span>
           <strong style="font-family:var(--font-body);font-size:14px;color:var(--text-primary);">ABES Engineering College</strong>
           <span style="font-family:var(--font-body);font-size:12px;line-height:1.5;color:var(--text-secondary);">
             Ghaziabad, Uttar Pradesh
